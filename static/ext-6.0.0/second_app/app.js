@@ -8,7 +8,7 @@ Ext.application({
 
     extend: 'SecondApp.Application',
 
-    appFolder : '/static/ext-6.0.0/second_app/app',
+    appFolder : 'second_app/app',
 
     requires: [
         'SecondApp.view.main.Main'

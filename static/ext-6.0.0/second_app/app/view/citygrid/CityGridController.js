@@ -26,6 +26,7 @@ Ext.define('SecondApp.view.citygrid.CityGridController', {
             regionCmb = view.down('#regionCmb'),
             vm = me.getViewModel(),
             cityStore = vm.getStore('city_store'),
+            pagingStore = vm.getStore('paging_store'),
             regionsStore = vm.getStore('regions_store'),
             mainApp = view.up('app-main'),
             streetGrid = mainApp.down('street-grid'),
@@ -34,29 +35,40 @@ Ext.define('SecondApp.view.citygrid.CityGridController', {
 
         cityGrid.setLoading();
         regionCmb.setLoading();
-        cityStore.load({
-            callback: function (records) {
-                var subjects = this.collect('subject'),
-                    citiesData = this.collect('name');
 
-                var regions = [],
-                    cities = [];
+        var recs = cityStore.getRange();
 
-                Ext.Array.forEach(subjects, function(subject) {
-                    regions.push({'regionName': subject});
-                });
+        if (!Ext.isEmpty(recs)) {
+            pagingStore.getProxy().setData(recs);
+            pagingStore.load();
 
-                Ext.Array.forEach(citiesData, function(city) {
-                    cities.push({'cityName': city});
-                });
+            var subjects = ['Москва', 'Калининградская', 'Ленинградская', 'Мурманская'],
+                citiesData = ['Москва', 'Калиниград', 'Мурманск', 'Санкт-Петербург'];
+            // var subjects = recs.collect('subject'),
+            //     citiesData = recs.collect('name');
 
-                regionsStore.loadData(regions);
-                cityGrid.setLoading(false);
-                regionCmb.setLoading(false);
+            var regions = [],
+                cities = [];
 
-                citiesStreetStore.loadData(cities);
-            }
-        });
+            Ext.Array.forEach(subjects, function(subject) {
+                regions.push({'regionName': subject});
+            });
+
+            Ext.Array.forEach(citiesData, function(city) {
+                cities.push({'cityName': city});
+            });
+
+            citiesStreetStore.loadData(cities);
+
+            regionsStore.loadData(regions);
+        }
+        
+        
+
+        cityGrid.setLoading(false);
+        regionCmb.setLoading(false);
+
+        
     },
 
     filterCityGrid: function() {
