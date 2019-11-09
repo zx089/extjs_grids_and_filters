@@ -1,7 +1,3 @@
 # test
 
-переделал согласно комментариям<br>
-данные прописаны локально<br>
-
-интересующий файл - static/ext-6.0.0/index.html<br>
-само приложение - static/ext-6.0.0/second_app 
+simple extjs test case
